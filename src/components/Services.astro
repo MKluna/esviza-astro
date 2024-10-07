@@ -1,0 +1,25 @@
+---
+const services = [
+  { title: 'Diseño Arquitectónico', icon: 'pencil-ruler' },
+  { title: 'Planificación Urbana', icon: 'city' },
+  { title: 'Interiorismo', icon: 'couch' },
+  { title: 'Consultoría en Sostenibilidad', icon: 'leaf' },
+];
+---
+
+<section id="services" class="py-20 bg-white">
+  <div class="container mx-auto px-6">
+    <h2 class="text-4xl font-serif font-bold text-center mb-12">Nuestros Servicios</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {services.map((service) => (
+        <div class="text-center">
+          <div class="bg-secondary rounded-full p-6 inline-block mb-4">
+            <i class={`fas fa-${service.icon} text-4xl text-primary`}></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">{service.title}</h3>
+          <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectGallery from '../components/ProjectGallery.astro';
+
+const projects = [
+  { id: 1, title: 'Casa Moderna', category: 'Residencial', image: '/images/project1.jpg' },
+  { id: 2, title: 'Oficinas Eco-friendly', category: 'Comercial', image: '/images/project2.jpg' },
+  { id: 3, title: 'Museo de Arte', category: 'Cultural', image: '/images/project3.jpg' },
+  { id: 4, title: 'Complejo Deportivo', category: 'Deportivo', image: '/images/project4.jpg' },
+  { id: 5, title: 'Rascacielos Urbano', category: 'Comercial', image: '/images/project5.jpg' },
+  { id: 6, title: 'Villa de Lujo', category: 'Residencial', image: '/images/project6.jpg' },
+  { id: 7, title: 'Centro Comunitario', category: 'Público', image: '/images/project7.jpg' },
+  { id: 8, title: 'Hotel Boutique', category: 'Hospitalidad', image: '/images/project8.jpg' },
+];
+
+const categories = ['Todos', ...new Set(projects.map(project => project.category))];
+---
+
+<Layout title="Esviza - Nuestros Proyectos">
+  <div class="container mx-auto px-4 py-16">
+    <h1 class="text-4xl md:text-5xl font-serif font-bold text-center mb-12">Nuestros Proyectos</h1>
+    
+    <div class="flex justify-center mb-8">
+      {categories.map(category => (
+        <button class="filter-btn mx-2 px-4 py-2 rounded-full bg-gray-200 hover:bg-primary hover:text-white transition-colors duration-300" data-filter={category === 'Todos' ? 'all' : category}>
+          {category}
+        </button>
+      ))}
+    </div>
+    
+    <ProjectGallery projects={projects} />
+  </div>
+</Layout>

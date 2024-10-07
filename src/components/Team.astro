@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets';
+
+const team = [
+  { 
+    id: 1,
+    name: 'Emma Sebalj', 
+    role: 'Arquitecta Principal', 
+    image: '/images/team1.jpg',
+    bio: 'Especializada en diseño sostenible y arquitectura moderna.'
+  },
+  { 
+    id: 2,
+    name: 'Carlos Rodríguez', 
+    role: 'Diseñador de Interiores', 
+    image: '/images/team2.jpg',
+    bio: 'Experto en crear espacios funcionales y estéticamente atractivos.'
+  },
+  { 
+    id: 3,
+    name: 'Laura Martínez', 
+    role: 'Planificadora Urbana', 
+    image: '/images/team3.jpg',
+    bio: 'Especializada en desarrollo urbano sostenible y espacios públicos.'
+  },
+  { 
+    id: 4,
+    name: 'David Sánchez', 
+    role: 'Especialista en Sostenibilidad', 
+    image: '/images/team4.jpg',
+    bio: 'Líder en implementación de tecnologías verdes en arquitectura.'
+  },
+];
+---
+
+<section id="team" class="py-20 bg-secondary">
+  <div class="container mx-auto px-6">
+    <h2 class="text-4xl font-serif font-bold text-center mb-12">Nuestro Equipo</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {team.map((member) => (
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg text-center transition-transform duration-300 hover:scale-105">
+          <Image src={member.image} alt={member.name} width={300} height={300} class="w-full h-64 object-cover" />
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">{member.name}</h3>
+            <p class="text-gray-600 mb-4">{member.role}</p>
+            <p class="text-sm mb-4">{member.bio}</p>
+            <a href={`/equipo/${member.id}`} class="inline-block bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90 transition-all duration-300">
+              Ver Perfil
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

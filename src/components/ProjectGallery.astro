@@ -1,0 +1,80 @@
+---
+import { Image } from 'astro:assets';
+
+interface Project {
+  id: number;
+  title: string;
+  category: string;
+  image: string;
+}
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<div class="project-gallery">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {projects.map((project) => (
+      <a href={`/proyectos/${project.id}`} class="project-item overflow-hidden rounded-lg shadow-lg" data-category={project.category}>
+        <Image
+          src={project.image}
+          alt={project.title}
+          width={600}
+          height={400}
+          class="w-full h-64 object-cover transition-transform duration-300 hover:scale-110"
+        />
+        <div class="p-4 bg-white">
+          <h3 class="text-xl font-semibold mb-2">{project.title}</h3>
+          <p class="text-gray-600">{project.category}</p>
+        </div>
+      </a>
+    ))}
+  </div>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Animación de entrada para los proyectos
+  gsap.utils.toArray('.project-item').forEach((item, index) => {
+    gsap.from(item, {
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      delay: index * 0.1,
+      scrollTrigger: {
+        trigger: item,
+        start: 'top 90%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+  });
+
+  // Filtro de proyectos
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const projectItems = document.querySelectorAll('.project-item');
+
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const filter = button.getAttribute('data-filter');
+      
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      projectItems.forEach(item => {
+        if (filter === 'all' || item.getAttribute('data-category') === filter) {
+          gsap.to(item, { opacity: 1, scale: 1, duration: 0.3 });
+        } else {
+          gsap.to(item, { opacity: 0.3, scale: 0.9, duration: 0.3 });
+        }
+      });
+    });
+  });
+</script>

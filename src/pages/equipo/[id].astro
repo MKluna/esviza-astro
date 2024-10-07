@@ -1,0 +1,91 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon';
+
+export async function getStaticPaths() {
+  const team = [
+    { 
+      id: 1,
+      name: 'Emma Sebalj', 
+      role: 'Arquitecta Principal', 
+      image: '/images/team1.jpg',
+      bio: 'Emma Sebalj es una arquitecta visionaria con más de 15 años de experiencia en el diseño de edificios sostenibles y modernos. Su enfoque innovador combina estética, funcionalidad y respeto por el medio ambiente.',
+      education: [
+        'Máster en Arquitectura Sostenible, Universidad Politécnica de Madrid',
+        'Licenciatura en Arquitectura, Universidad de Barcelona'
+      ],
+      experience: [
+        'Arquitecta Senior en Estudio Verde (2010-2018)',
+        'Colaboradora en Foster + Partners, Londres (2008-2010)'
+      ],
+      awards: [
+        'Premio Nacional de Arquitectura Sostenible 2019',
+        'Mención de Honor en la Bienal de Arquitectura de Venecia 2016'
+      ],
+      social: {
+        linkedin: 'https://www.linkedin.com/in/emmasebalj',
+        instagram: 'https://www.instagram.com/emmasebalj_arq'
+      }
+    },
+    // Añade más miembros del equipo aquí...
+  ];
+
+  return team.map(member => ({
+    params: { id: member.id.toString() },
+    props: { member },
+  }));
+}
+
+const { member } = Astro.props;
+---
+
+<Layout title={`Esviza - ${member.name}`}>
+  <div class="container mx-auto px-4 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div class="md:col-span-1">
+        <Image 
+          src={member.image} 
+          alt={member.name} 
+          width={400} 
+          height={400} 
+          class="w-full h-auto rounded-lg shadow-lg mb-6"
+        />
+        <h1 class="text-3xl font-serif font-bold mb-2">{member.name}</h1>
+        <p class="text-xl text-gray-600 mb-4">{member.role}</p>
+        <div class="flex space-x-4 mb-6">
+          <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" class="text-primary hover:text-accent">
+            <Icon name="mdi:linkedin" class="w-6 h-6" />
+          </a>
+          <a href={member.social.instagram} target="_blank" rel="noopener noreferrer" class="text-primary hover:text-accent">
+            <Icon name="mdi:instagram" class="w-6 h-6" />
+          </a>
+        </div>
+      </div>
+      <div class="md:col-span-2">
+        <h2 class="text-2xl font-semibold mb-4">Acerca de</h2>
+        <p class="text-lg mb-6">{member.bio}</p>
+        
+        <h2 class="text-2xl font-semibold mb-4">Educación</h2>
+        <ul class="list-disc list-inside mb-6">
+          {member.education.map(edu => <li>{edu}</li>)}
+        </ul>
+        
+        <h2 class="text-2xl font-semibold mb-4">Experiencia Laboral</h2>
+        <ul class="list-disc list-inside mb-6">
+          {member.experience.map(exp => <li>{exp}</li>)}
+        </ul>
+        
+        <h2 class="text-2xl font-semibold mb-4">Premios y Reconocimientos</h2>
+        <ul class="list-disc list-inside mb-6">
+          {member.awards.map(award => <li>{award}</li>)}
+        </ul>
+      </div>
+    </div>
+    <div class="mt-12 text-center">
+      <a href="/#team" class="inline-block bg-primary text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-opacity-90 transition-all duration-300">
+        Volver al Equipo
+      </a>
+    </div>
+  </div>
+</Layout>

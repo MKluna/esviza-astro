@@ -1,0 +1,88 @@
+---
+const navItems = [
+  { name: 'Inicio', url: '#home' },
+  { name: 'Proyectos', url: '#projects' },
+  { name: 'Servicios', url: '#services' },
+  { name: 'Equipo', url: '#team' },
+  { name: 'Contacto', url: '#contact' },
+];
+---
+
+<header class="fixed w-full bg-white bg-opacity-90 z-50 shadow-md">
+  <nav class="container mx-auto px-6 py-3">
+    <div class="flex justify-between items-center">
+      <a href="#home" class="text-2xl font-serif font-bold text-primary smooth-scroll">Esviza</a>
+      <ul class="hidden md:flex space-x-6">
+        {navItems.map((item) => (
+          <li>
+            <a href={item.url} class="text-primary hover:text-accent transition-colors duration-300 smooth-scroll">{item.name}</a>
+          </li>
+        ))}
+      </ul>
+      <button class="md:hidden text-primary" id="mobile-menu-button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+  <div class="md:hidden hidden" id="mobile-menu">
+    <ul class="bg-white px-6 py-4">
+      {navItems.map((item) => (
+        <li class="mb-2">
+          <a href={item.url} class="block text-primary hover:text-accent transition-colors duration-300 smooth-scroll">{item.name}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
+  gsap.registerPlugin(ScrollToPlugin);
+
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  mobileMenuButton.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  // Smooth scroll animation
+  document.querySelectorAll('.smooth-scroll').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+      
+      if (targetElement) {
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: {
+            y: targetElement,
+            offsetY: 80 // Adjust this value based on your header height
+          },
+          ease: 'power3.inOut'
+        });
+
+        // Close mobile menu if open
+        if (!mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+        }
+      } else if (targetId === '#home') {
+        // Scroll to the top of the page for the 'Inicio' link
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: {
+            y: 0,
+            autoKill: false
+          },
+          ease: 'power3.inOut'
+        });
+      }
+    });
+  });
+</script>

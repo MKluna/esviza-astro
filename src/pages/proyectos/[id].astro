@@ -1,0 +1,108 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+
+export async function getStaticPaths() {
+  const projects = [
+    { 
+      id: 1, 
+      title: 'Casa Moderna', 
+      category: 'Residencial', 
+      image: '/images/project1.jpg',
+      description: 'Una residencia contemporánea que fusiona funcionalidad y estética.',
+      client: 'Familia Rodríguez',
+      location: 'Barcelona, España',
+      year: 2022,
+      area: '250 m²',
+      architect: 'Emma Sebalj',
+      features: ['Diseño sostenible', 'Domótica integrada', 'Espacios abiertos'],
+      gallery: ['/images/project1-detail1.jpg', '/images/project1-detail2.jpg', '/images/project1-detail3.jpg']
+    },
+    // Añade más proyectos aquí...
+  ];
+
+  return projects.map(project => ({
+    params: { id: project.id.toString() },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<Layout title={`Esviza - ${project.title}`}>
+  <div class="container mx-auto px-4 py-16">
+    <h1 class="text-4xl md:text-5xl font-serif font-bold text-center mb-8">{project.title}</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div>
+        <Image 
+          src={project.image} 
+          alt={project.title} 
+          width={800} 
+          height={600} 
+          class="w-full h-auto rounded-lg shadow-lg"
+        />
+        <div class="mt-8">
+          <h2 class="text-2xl font-semibold mb-4">Galería</h2>
+          <div class="grid grid-cols-3 gap-4">
+            {project.gallery.map((img, index) => (
+              <Image 
+                src={img} 
+                alt={`${project.title} - Imagen ${index + 1}`} 
+                width={300} 
+                height={200} 
+                class="w-full h-auto rounded-lg shadow cursor-pointer hover:opacity-80 transition-opacity"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="text-lg mb-6">{project.description}</p>
+        <div class="grid grid-cols-2 gap-4 mb-8">
+          <div>
+            <h3 class="font-semibold">Cliente</h3>
+            <p>{project.client}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold">Ubicación</h3>
+            <p>{project.location}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold">Año</h3>
+            <p>{project.year}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold">Área</h3>
+            <p>{project.area}</p>
+          </div>
+          <div>
+            <h3 class="font-semibold">Arquitecto Principal</h3>
+            <p>{project.architect}</p>
+          </div>
+        </div>
+        <h3 class="text-xl font-semibold mb-4">Características</h3>
+        <ul class="list-disc list-inside mb-8">
+          {project.features.map(feature => (
+            <li>{feature}</li>
+          ))}
+        </ul>
+        <a href="/proyectos" class="inline-block bg-primary text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-opacity-90 transition-all duration-300">
+          Volver a Proyectos
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import 'photoswipe/style.css';
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '.grid',
+    children: 'img',
+    pswpModule: () => import('photoswipe')
+  });
+  lightbox.init();
+</script>
